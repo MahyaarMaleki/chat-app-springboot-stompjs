@@ -5,59 +5,61 @@
     <title>Spring boot websocket chat application</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="/main.css" >
+    <link rel="stylesheet" href="./main.css" >
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <script src="/main.js"></script>
+    <script src="./main.js"></script>
 </head>
 <body>
 
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript!
     Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!</h2></noscript>
 
-<div id="username-page" class="container d-none d-flex p-2 justify-content-center align-items-center">
-    <div>
-        <div class="row d-flex p-2 justify-content-center align-items-center">
-            <div class="col-md-12">
-                <form class="form-inline">
+<section id="username-page" class="default-section">
+    <div class="container ">
+        <div class="row d-flex justify-content-center align-items-center min-vh-100">
+            <div class="col-md-10 col-lg-8 col-xl-6 border border-light border-1 rounded bg-white">
+                <form class="form-inline p-4">
                     <div class="form-group">
-                        <label class="mb-1" for="username">Type your username to enter the Chatroom</label>
-                        <input id="username" class="form-control" type="text" placeholder="Your username here..." autocomplete="off">
-                        <button id="start" class="btn btn-outline-success" type="submit">Start chatting</button>
+                        <label class="mb-2" for="username">Type your username to enter the Chatroom</label>
+                        <div class="input-group">
+                            <input id="username" class="form-control" type="text" placeholder="Your username here..." autocomplete="off">
+                            <button id="connect" class="btn btn-outline-secondary" type="submit">Start chatting</button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<div id="chat-page" class="container">
-        <div>
-            <h2>Spring WebSocket Chat Demo</h2>
-        </div>
-        <div>
-            <h6>Connecting...</h6>
-        </div>
-        <div>
-            <ul id="chat-box">
-
-            </ul>
-        </div>
-
-        <form id="message-form" class="form-inline" name="message-form">
-            <div class="form-group">
-                <div class="d-flex justify-content-center">
-                    <div class="input-group">
-                        <input id="message" class="form-control" type="text" placeholder="Your message here..." autocomplete="off">
-                        <button id="send" class="btn btn-primary" type="submit" >Send</button>
+<section id="chat-page" class="d-none default-section">
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center p-3">
+                        <h5 class="my-auto">Chat</h5>
+                        <p id="status" class="small my-auto">Connecting...</p>
+                        <button id="disconnect" class="btn btn-outline-danger" type="button">Leave</button>
+                    </div>
+                    <div id="chat-box" class="card-body">
+                        <div class="d-flex flex-row justify-content-start">
+                            <ul id="message-area">
+                            </ul>
+                        </div>
+                        <div class="input-group">
+                            <input id="message" class="form-control" type="text" placeholder="Message" autocomplete="off" aria-label="Message" aria-describedby="send">
+                            <button id="send" class="btn btn-outline-primary" type="button">Send</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </form>
-
-</div>
+        </div>
+    </div>
+</section>
 
 </body>
 </html>

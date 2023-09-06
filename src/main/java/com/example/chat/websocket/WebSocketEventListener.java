@@ -19,7 +19,6 @@ import static com.example.chat.model.enumeration.MessageType.*;
 @RequiredArgsConstructor
 @Slf4j
 public class WebSocketEventListener {
-
     private final SimpMessageSendingOperations messageSendingOperations;
 
     @EventListener
