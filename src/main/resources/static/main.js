@@ -1,6 +1,5 @@
 let stompClient = null;
 let username = null;
-let status = $("#status");
 
 const websocketURL = "http://localhost:8080/websocket";
 
@@ -33,7 +32,7 @@ function onConnect(frame) {
     stompClient.subscribe("/topic/public", onMessageReceive);
     // tell username to the server
     stompClient.send("/app/addUser", {}, JSON.stringify({sender: username, type: "JOIN"}));
-    status.text("Connected");
+    $("#status").text("Connected");
 }
 
 function setConnected(connected) {
@@ -49,6 +48,7 @@ function setConnected(connected) {
 
 function onError(error) {
     console.log(error);
+    let status = $("#status");
     status.text("Could not connect to the websocket server, pls refresh this page and try again.");
     status.css("color", "red");
 }
