@@ -9,17 +9,17 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
-    <script src="./main.js"></script>
+    <script src="./app.js"></script>
 </head>
 <body>
 
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript!
     Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!</h2></noscript>
 
-<section id="username-page" class="default-section">
-    <div class="container ">
+<div id="username-page" class="bg-light">
+    <div class="container">
         <div class="row d-flex justify-content-center align-items-center min-vh-100">
-            <div class="col-md-10 col-lg-8 col-xl-6 border border-light border-1 rounded bg-white">
+            <div class="col-md-10 col-lg-8 col-xl-6 border border-secondary border-1 rounded bg-white">
                 <form class="form-inline p-4">
                     <div class="form-group">
                         <label class="mb-2" for="username">Type your username to enter the Chatroom</label>
@@ -32,11 +32,11 @@
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<section id="chat-page" class="d-none default-section">
-    <div class="container py-5">
-        <div class="row d-flex justify-content-center">
+<div id="chat-page" class="d-none bg-light">
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center min-vh-100">
             <div class="col-md-10 col-lg-8 col-xl-6">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between p-3">
@@ -44,11 +44,9 @@
                         <p id="status" class="small my-auto px-3">Connecting...</p>
                         <button id="disconnect" class="btn btn-outline-danger" type="button">Leave</button>
                     </div>
-                    <div id="chat-box" class="card-body">
-                        <div class="d-flex flex-row justify-content-start">
-                            <ul id="message-area" class="list-unstyled">
-                            </ul>
-                        </div>
+                    <div id="chat-box" class="card-body" style="min-height: 400px; position: relative; overflow-y: auto">
+                        <ul id="message-area" class="list-unstyled">
+                        </ul>
                     </div>
                     <div class="card-footer text-muted flex-fill p-3">
                         <form class="form-inline">
@@ -65,7 +63,7 @@
             </div>
         </div>
     </div>
-</section>
+</div>
 
 </body>
 </html>
