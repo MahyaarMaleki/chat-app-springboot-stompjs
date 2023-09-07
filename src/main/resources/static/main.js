@@ -1,38 +1,39 @@
-let stompClient = null;
-let username = null;
-
-const websocketURL = "http://localhost:8080/websocket";
+const stompClient = new StompJs.Client({
+    brokerURL: "ws://localhost:8080/websocket"
+});
 
 const colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
-function connect() {
-    username = $("#username").val().trim();
-    if(username) {
-        let socket = new SockJS(websocketURL);
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, onConnect, onError);
-    }
-}
+let username = null;
+let status = null;
 
-function disconnect() {
-    if (stompClient !== null) {
-        stompClient.disconnect();
-    }
-    setConnected(false);
-    console.log("Disconnected");
-}
-
-function onConnect(frame) {
+stompClient.onConnect = (frame) => {
     setConnected(true);
     console.log("Connected: " + frame);
     // subscribe to the public topic
     stompClient.subscribe("/topic/public", onMessageReceive);
-    // tell username to the server
-    stompClient.send("/app/addUser", {}, JSON.stringify({sender: username, type: "JOIN"}));
-    $("#status").text("Connected");
+    // tell added username to the server
+    stompClient.publish({
+        destination: "/app/addUser",
+        body: JSON.stringify({"sender": username, "messageType": "JOIN"})
+    });
+    status.text("Connected");
+};
+
+function connect() {
+    username = $("#username").val().trim();
+    if(username) {
+        stompClient.activate();
+    }
+}
+
+function disconnect() {
+    stompClient.deactivate();
+    setConnected(false);
+    console.log("Disconnected");
 }
 
 function setConnected(connected) {
@@ -48,7 +49,6 @@ function setConnected(connected) {
 
 function onError(error) {
     console.log(error);
-    let status = $("#status");
     status.text("Could not connect to the websocket server, pls refresh this page and try again.");
     status.css("color", "red");
 }
