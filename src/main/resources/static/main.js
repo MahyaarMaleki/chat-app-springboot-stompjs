@@ -8,7 +8,6 @@ const colors = [
 ];
 
 let username = null;
-let status = null;
 
 stompClient.onConnect = (frame) => {
     setConnected(true);
@@ -20,7 +19,7 @@ stompClient.onConnect = (frame) => {
         destination: "/app/addUser",
         body: JSON.stringify({"sender": username, "messageType": "JOIN"})
     });
-    status.text("Connected");
+    $("#status").text("Connected");
 };
 
 function connect() {
@@ -47,10 +46,16 @@ function setConnected(connected) {
     $("#message-area").html("");
 }
 
-function onError(error) {
-    console.log(error);
+stompClient.onWebSocketError = (frame) => {
+    console.error("Error with websocket", frame);
+    let status = $("#status");
     status.text("Could not connect to the websocket server, pls refresh this page and try again.");
     status.css("color", "red");
+};
+
+stompClient.onStompError = (frame) => {
+    console.error("Broker reported error: " + frame.headers["message"]);
+    console.error("Additional details: " + frame.body);
 }
 
 function onMessageReceive(payload) {
@@ -58,10 +63,10 @@ function onMessageReceive(payload) {
 
     let messageElement = document.createElement("li");
 
-    if(message.type === "JOIN") {
+    if(message.messageType === "JOIN") {
         messageElement.classList.add("event-message");
         message.content = message.sender + " has joined the chat!";
-    } else if(message.type === "LEAVE") {
+    } else if(message.messageType === "LEAVE") {
         messageElement.classList.add("event-message");
         message.content = message.sender + " has left the chat!";
     } else {
@@ -101,13 +106,16 @@ function getAvatarColor(messageSender) {
 function sendMessage() {
     let message = $("#message");
     let messageContent = message.val().trim();
-    if(messageContent && stompClient) {
+    if(messageContent) {
         let chatMessage = {
             sender: username,
             content: messageContent,
-            messageType: 'CHAT'
+            messageType: "CHAT"
         };
-        stompClient.send('/app/sendMessage', {}, JSON.stringify(chatMessage));
+        stompClient.publish({
+            destination: "/app/sendMessage",
+            body: JSON.stringify(chatMessage)
+        });
         message.val("");
     }
 }
